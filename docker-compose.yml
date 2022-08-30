@@ -1,0 +1,24 @@
+services:
+  worker:
+    build:
+      context: ./
+      dockerfile: docker/worker/Dockerfile
+    scale: 4
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c 'pnpm worker'
+
+  sender:
+    build:
+      context: ./
+      dockerfile: docker/worker/Dockerfile
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c 'pnpm sender'
+
+  queue:
+    image: rabbitmq:3.10-alpine
+    env_file:
+      - docker/queue/.env
