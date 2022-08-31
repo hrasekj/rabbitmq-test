@@ -17,7 +17,8 @@
   "dependencies": {
     "amqp-connection-manager": "^4.1.6",
     "amqplib": "^0.10.2",
-    "fast-safe-stringify": "^2.1.1"
+    "fast-safe-stringify": "^2.1.1",
+    "nanoid": "^4.0.0"
   },
   "devDependencies": {
     "@swc/core": "^1.2.245",

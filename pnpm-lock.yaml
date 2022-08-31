@@ -7,6 +7,7 @@ specifiers:
   amqp-connection-manager: ^4.1.6
   amqplib: ^0.10.2
   fast-safe-stringify: ^2.1.1
+  nanoid: ^4.0.0
   prettier: ^2.7.1
   ts-node: ^10.9.1
   typescript: ^4.8.2
@@ -15,6 +16,7 @@ dependencies:
   amqp-connection-manager: 4.1.6_amqplib@0.10.2
   amqplib: 0.10.2
   fast-safe-stringify: 2.1.1
+  nanoid: 4.0.0
 
 devDependencies:
   '@swc/core': 1.2.245
@@ -336,6 +338,12 @@ packages:
 
   /ms/2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
+    dev: false
+
+  /nanoid/4.0.0:
+    resolution: {integrity: sha512-IgBP8piMxe/gf73RTQx7hmnhwz0aaEXYakvqZyE302IXW3HyVNhdNGC+O2MwMAVhLEnvXlvKtGbtJf6wvHihCg==}
+    engines: {node: ^14 || ^16 || >=18}
+    hasBin: true
     dev: false
 
   /prettier/2.7.1:
