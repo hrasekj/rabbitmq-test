@@ -1,4 +1,3 @@
-import { setTimeout } from 'node:timers/promises';
 import { Channel, ChannelWrapper } from 'amqp-connection-manager';
 import { ConsumeMessage, Options } from 'amqplib';
 
