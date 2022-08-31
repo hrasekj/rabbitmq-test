@@ -11,11 +11,12 @@ type Options = {
 };
 
 export const createConsumer = async (queueName: string, options: Options = {}): Promise<ChannelWrapper> => {
-  const conn = createConnection();
+  const name = 'consumer';
+  const conn = createConnection(name);
 
   // configure channel
   const channelWrapper = conn.createChannel({
-    name: 'consumer',
+    name,
     async setup(channel: Channel) {
       await Promise.all([
         channel.assertQueue(queueName, options.assert),

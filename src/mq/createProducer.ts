@@ -12,11 +12,12 @@ type Producer = {
 };
 
 export const createProducer = async (queueName: string, options: Options = {}): Promise<Producer> => {
-  const conn = createConnection();
+  const name = 'producer';
+  const conn = createConnection(name);
 
   // configure channel
   const channelWrapper = conn.createChannel({
-    name: 'producer',
+    name,
     async setup(channel: Channel) {
       await channel.assertQueue(queueName, options.assert);
     },
