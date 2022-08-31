@@ -1,19 +1,7 @@
-import { URL } from 'node:url';
 import amqp from 'amqp-connection-manager';
-import { Options } from 'amqplib';
-
+import { urlToOrigin } from '../helpers/urlToOrigin';
 import config from '../config';
 import logger from '../logger';
-
-const urlToOrigin = (url: string | Options.Connect) => {
-  if (typeof url === 'string') {
-    const { protocol, hostname, port, pathname } = new URL(url);
-    return `${protocol}//${hostname}:${port || 5672}${pathname || '/'}`;
-  }
-
-  const { protocol, hostname, port, vhost } = url;
-  return `${protocol}://${hostname}:${port}${vhost}`;
-};
 
 export const createConnection = () => {
   // configure connection
