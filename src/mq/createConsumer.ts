@@ -23,7 +23,14 @@ export const createConsumer = async (queueName: string, options: Options = {}): 
         channel.prefetch(options.prefetch || 0),
         channel.consume(
           queueName,
-          (data: ConsumeMessage) => {
+          (data: ConsumeMessage | null) => {
+            if (data === null) {
+              // null means channel is cancelled
+              // @see https://www.rabbitmq.com/consumer-cancel.html
+              // TODO how to handle this situation?
+              return;
+            }
+
             if (channelWrapper.listenerCount('message') === 0) {
               logger.error('Consumer for queue %s does not have message event listener!', queueName);
             }
