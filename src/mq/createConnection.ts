@@ -8,7 +8,7 @@ const connRegistry = new Map<string, string[]>();
 const connPool = new Map<string, AmqpConnectionManager>();
 const maxChannelCountPerConnection = 9;
 
-export const createConnection = (type: string) => {
+export const createConnection = (type: string): AmqpConnectionManager => {
   const registry = connRegistry.get(type) || [];
 
   for (let i = 0; i < registry.length; i++) {
@@ -16,17 +16,19 @@ export const createConnection = (type: string) => {
     const conn = connPool.get(connId);
 
     // limit number of channels per connection
-    if (conn.channelCount < maxChannelCountPerConnection) {
+    if (conn && conn.channelCount < maxChannelCountPerConnection) {
       return conn;
     }
   }
 
   // create/register new connection
   const newIndex = nanoid(8);
-  connPool.set(newIndex, newConnection(newIndex, type));
+  const newConn = newConnection(newIndex, type);
+
+  connPool.set(newIndex, newConn);
   connRegistry.set(type, registry.concat(newIndex));
 
-  return connPool.get(newIndex);
+  return newConn;
 };
 
 const newConnection = (connId: string, type: string) => {
@@ -37,7 +39,7 @@ const newConnection = (connId: string, type: string) => {
 
   // cleanup on disconnect
   conn.once('disconnect', () => {
-    const registry = connRegistry.get(type);
+    const registry = connRegistry.get(type) || [];
     connRegistry.set(
       type,
       registry.filter((val) => val === connId)
@@ -50,7 +52,7 @@ const newConnection = (connId: string, type: string) => {
     logger.info("amqp(%s) connected to '%s'!", connId, urlToOrigin(url));
   });
   conn.on('connectFailed', ({ err, url }) => {
-    logger.error("amqp(%s) connect '%s' failed!", connId, urlToOrigin(url), err);
+    logger.error("amqp(%s) connect '%s' failed!", connId, url && urlToOrigin(url), err);
   });
   conn.on('blocked', ({ reason }) => {
     logger.info('amqp(%s) blocked %s!', connId, reason);
