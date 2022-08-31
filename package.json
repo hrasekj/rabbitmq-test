@@ -8,7 +8,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "worker": "ts-node src/run/worker_ack.ts",
+    "subscriber": "ts-node src/run/sub.ts",
+    "publisher": "ts-node src/run/pub.ts",
+    "worker": "ts-node src/run/worker.ts",
     "sender": "ts-node src/run/sender.ts"
   },
   "keywords": [],

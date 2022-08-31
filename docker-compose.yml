@@ -1,13 +1,31 @@
 services:
-  worker:
+  subscriber1:
     build:
       context: ./
       dockerfile: docker/worker/Dockerfile
-    scale: 4
     working_dir: /app
     volumes:
       - ./:/app
-    command: sh -c 'pnpm worker'
+    command: sh -c 'pnpm subscriber *.info *.warn'
+
+  subscriber2:
+    build:
+      context: ./
+      dockerfile: docker/worker/Dockerfile
+    scale: 2
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c 'pnpm subscriber level.*'
+
+  publisher:
+    build:
+      context: ./
+      dockerfile: docker/worker/Dockerfile
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c 'pnpm publisher'
 
   sender:
     build:
@@ -19,6 +37,8 @@ services:
     command: sh -c 'pnpm sender'
 
   queue:
-    image: rabbitmq:3.10-alpine
+    image: rabbitmq:3.10-management-alpine
     env_file:
       - docker/queue/.env
+    ports:
+      - 127.0.0.1:15672:15672
