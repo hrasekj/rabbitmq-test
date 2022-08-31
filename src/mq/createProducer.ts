@@ -1,7 +1,6 @@
-import { Channel, ChannelWrapper } from 'amqp-connection-manager';
+import { Channel } from 'amqp-connection-manager';
 import { Options } from 'amqplib';
-import safeStringify from 'fast-safe-stringify';
-
+import { contentToBuffer } from '../helpers/contentToBuffer';
 import { createConnection } from './createConnection';
 
 type Options = {
@@ -25,17 +24,7 @@ export const createProducer = async (queueName: string, options: Options = {}): 
 
   return {
     async sendToQueue(content) {
-      let message: Buffer;
-
-      if (typeof content === 'string' || typeof content === 'number' || typeof content === 'boolean') {
-        message = Buffer.from(content.toString());
-      } else if (Buffer.isBuffer(content)) {
-        message = content;
-      } else {
-        message = Buffer.from(safeStringify(content));
-      }
-
-      await channelWrapper.sendToQueue(queueName, message);
+      await channelWrapper.sendToQueue(queueName, contentToBuffer(content));
     },
   };
 };
