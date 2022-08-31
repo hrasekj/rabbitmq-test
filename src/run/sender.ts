@@ -6,9 +6,10 @@ import { createProducer } from '../mq/createProducer';
 
   let num = 0;
 
-  setInterval(() => {
+  setInterval(async () => {
     try {
-      producer.sendToQueue({ content: 'hello world!', no: ++num });
+      const no = ++num;
+      await producer.sendToQueue({ content: 'hello world!', no });
       logger.info('Message %d sent!', num);
     } catch (err: any) {
       logger.error('Message error', err);
