@@ -6,6 +6,7 @@ import logger from '../logger';
 
 type Options = {
   consume?: Options.Consume;
+  exchange?: Options.AssertExchange;
 };
 
 export const createSubscriber = async (
@@ -26,7 +27,7 @@ export const createSubscriber = async (
       const queueName = q.queue;
 
       await Promise.all([
-        channel.assertExchange(exchangeName, 'topic', { durable: false }),
+        channel.assertExchange(exchangeName, 'topic', { ...options.exchange }), // each subscriber must bind his queue to desired exchange and define its routing key (aka topic)
         // each subscriber must bind his queue to desired exchange and define its routing key (aka topic)
         // @see https://www.rabbitmq.com/tutorials/tutorial-four-javascript.html
         // @see https://www.rabbitmq.com/tutorials/tutorial-five-javascript.html
