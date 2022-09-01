@@ -26,6 +26,7 @@ export const createSubscriber = async (
       const queueName = q.queue;
 
       await Promise.all([
+        channel.assertExchange(exchangeName, 'topic', { durable: false }),
         // each subscriber must bind his queue to desired exchange and define its routing key (aka topic)
         // @see https://www.rabbitmq.com/tutorials/tutorial-four-javascript.html
         // @see https://www.rabbitmq.com/tutorials/tutorial-five-javascript.html
