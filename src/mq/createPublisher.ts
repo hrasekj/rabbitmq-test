@@ -4,7 +4,7 @@ import { contentToBuffer } from '../helpers/contentToBuffer';
 import { createConnection } from './createConnection';
 
 type Options = {
-  assert?: Options.AssertExchange;
+  exchange?: Options.AssertExchange;
 };
 
 type Publisher = {
@@ -19,7 +19,7 @@ export const createPublisher = async (exchangeName: string, options: Options = {
   const channelWrapper = conn.createChannel({
     name,
     async setup(channel: Channel) {
-      await channel.assertExchange(exchangeName, 'topic', options.assert);
+      await channel.assertExchange(exchangeName, 'topic', options.exchange);
     },
   });
 

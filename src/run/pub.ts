@@ -10,7 +10,7 @@ const rndLvl = () => {
 
 (async function main() {
   const producer = await createPublisher('le_logs', {
-    // assert: { durable: false }
+    // exchange: { durable: false }
   });
 
   let num = 0;
