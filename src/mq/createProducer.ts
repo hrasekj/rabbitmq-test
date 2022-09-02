@@ -25,7 +25,11 @@ export const createProducer = async (queueName: string, options: Options = {}): 
 
   return {
     async sendToQueue(content) {
-      await channelWrapper.sendToQueue(queueName, contentToBuffer(content));
+      const done = await channelWrapper.sendToQueue(queueName, contentToBuffer(content));
+
+      if (!done) {
+        return new Promise((resolve) => channelWrapper.once('drain', resolve));
+      }
     },
   };
 };

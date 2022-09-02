@@ -25,7 +25,11 @@ export const createPublisher = async (exchangeName: string, options: Options = {
 
   return {
     async publish(key, content) {
-      await channelWrapper.publish(exchangeName, key, contentToBuffer(content));
+      const done = await channelWrapper.publish(exchangeName, key, contentToBuffer(content));
+
+      if (!done) {
+        return new Promise((resolve) => channelWrapper.once('drain', resolve));
+      }
     },
   };
 };
